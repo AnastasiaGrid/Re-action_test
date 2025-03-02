@@ -1,50 +1,62 @@
-import {getPosts} from "../utils/api.ts";
+import {getPosts, IPostsParams} from "../utils/api.ts";
 import {IPost } from "../utils/types.ts";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 
 interface IInitialState {
     posts: IPost[],
-    loading: boolean,
+    loadingPosts: boolean,
     error: null | string,
-    page: number,
+    params: {
+        page?: number,
+        title?: string
+    }
+
 
 }
 const initialState: IInitialState = {
     posts: [],
-    loading: false,
+    loadingPosts: false,
     error: null,
-    page: 1,
+    params: {
+        page: 1,
+        title: ''
+    }
 }
 
 export const getPostsApiThunk = createAsyncThunk(
     'posts/getPosts',
     getPosts
 );
+
 export const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers:{},
     selectors: {
-        selectIsPostsLoading: (sliceState)=> sliceState.loading,
+        selectIsPostsLoading: (sliceState)=> sliceState.loadingPosts,
         selectPosts: (sliceState)=> sliceState.posts,
-        selectPage: (sliceState)=> sliceState.page,
+        selectPage: (sliceState)=> sliceState.params.page,
+        selectParams: (sliceState)=> sliceState.params,
+        selectFiltering: (sliceState)=> sliceState.params.title? !!sliceState.params.title.length : false,
     },
     extraReducers: (builder) => {
         builder
             .addCase(getPostsApiThunk.pending, (state) => {
-                state.loading = true;
+                state.loadingPosts = true;
             })
             .addCase(getPostsApiThunk.rejected, (state) => {
-                state.loading = false;
+                state.loadingPosts = false;
                 state.error = 'Oшибка загрузки постов';
             })
             .addCase(getPostsApiThunk.fulfilled, (state, action ) => {
-                state.loading = false;
-                state.page = action.payload.page
-                state.posts = action.payload.posts;
+                console.log(action)
+                state.loadingPosts = false;
+                state.params.title = action.meta.arg.title
+                state.params.page = action.meta.arg.page
+                state.posts = action.payload;
             });
     }
 })
 
 export default postsSlice.reducer;
-export const { selectIsPostsLoading, selectPosts, selectPage } = postsSlice.selectors
+export const { selectIsPostsLoading, selectPosts, selectPage, selectFiltering } = postsSlice.selectors

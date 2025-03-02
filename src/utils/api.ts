@@ -3,7 +3,7 @@ import {IPost} from "./types.ts";
 const checkResponse = <T>(res: Response): Promise<T> =>
     res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 
-interface IPostsParams {
+export interface IPostsParams {
   page?: number;
   title?: string
 }
@@ -20,7 +20,7 @@ const clearObjectValues = (obj: Record<string, string>)=> {
     return clearedObj
 }
 
-export const getPosts = async ({page = 1, title = ''}: IPostsParams): Promise<IGetPostsParams> => {
+export const getPosts = async ({page = 1, title = ''}: IPostsParams): Promise<IPost[]> => {
     const params = new URLSearchParams(clearObjectValues({
         _page: page? String(page): '',
         title,
@@ -28,9 +28,10 @@ export const getPosts = async ({page = 1, title = ''}: IPostsParams): Promise<IG
 
     return fetch(`https://jsonplaceholder.typicode.com/posts?${params}`)
         .then((response) => checkResponse<IPost[]>(response))
-        .then((data: IPost[]) => {
-            if (data) {
-                return {posts: data, page: page}
-            }
-            return Promise.reject(data)})
+        // .then((data: IPost[]) => {
+        //     if (data) {
+        //         return data
+        //         // return {posts: data, page: page}
+        //     }
+        //     return Promise.reject(data)})
 }

@@ -6,9 +6,9 @@ import styles from './PostsList.module.scss'
 export function PostsList({posts}: {posts: IPost[]}): JSX.Element {
     return (
         <div>
-            <ul className={styles.list}>
-                { posts.map((post, index) => <PostItem key={index} post={post}/>)}
-            </ul>
+            {posts.length > 0 ? <ul className={styles.list}>
+                {posts.map((post, index) => <PostItem key={index} post={post}/>)}
+            </ul> : <p className={styles.error}>Title not found. Please make sure you entered the entire post title</p>}
         </div>
     )
 }
