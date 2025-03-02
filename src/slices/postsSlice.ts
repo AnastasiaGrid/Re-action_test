@@ -6,11 +6,14 @@ interface IInitialState {
     posts: IPost[],
     loading: boolean,
     error: null | string,
+    page: number,
+
 }
 const initialState: IInitialState = {
     posts: [],
     loading: false,
     error: null,
+    page: 1,
 }
 
 export const getPostsApiThunk = createAsyncThunk(
@@ -23,7 +26,8 @@ export const postsSlice = createSlice({
     reducers:{},
     selectors: {
         selectIsPostsLoading: (sliceState)=> sliceState.loading,
-        selectPosts: (sliceState)=> sliceState.posts
+        selectPosts: (sliceState)=> sliceState.posts,
+        selectPage: (sliceState)=> sliceState.page,
     },
     extraReducers: (builder) => {
         builder
@@ -36,10 +40,11 @@ export const postsSlice = createSlice({
             })
             .addCase(getPostsApiThunk.fulfilled, (state, action ) => {
                 state.loading = false;
-                state.posts = action.payload;
+                state.page = action.payload.page
+                state.posts = action.payload.posts;
             });
     }
 })
 
 export default postsSlice.reducer;
-export const { selectIsPostsLoading, selectPosts } = postsSlice.selectors
+export const { selectIsPostsLoading, selectPosts, selectPage } = postsSlice.selectors
