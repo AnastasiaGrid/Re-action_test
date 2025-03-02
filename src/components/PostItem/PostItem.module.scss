@@ -1,3 +1,18 @@
 .listItem{
-  width: 700px;
+  max-width: 1000px;
+}
+@media (max-width: 675px) {
+  .listItem{
+    min-width: 250px;
+  }
+}
+
+.title{
+  color: rgba(0, 0, 0, 0.7);
+
+}
+
+.description{
+  color: rgba(0, 0, 0, 0.6);
+
 }

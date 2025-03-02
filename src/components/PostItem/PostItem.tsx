@@ -9,10 +9,8 @@ export function PostItem({post}: {post: IPost}) {
             <Card>
                 <React.Fragment>
                     <CardContent>
-                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                            {post.title}
-                        </Typography>
-                        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{post.body}</Typography>
+                        <h3 className={styles.title}> {post.title} </h3>
+                        <p className={styles.description}> {post.body}</p>
                     </CardContent>
                 </React.Fragment>
             </Card>

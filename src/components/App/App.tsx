@@ -32,8 +32,8 @@ function App() {
 
   return (
       <div className={styles.container}>
-          <Paper component='form' sx={{width: '500px'}}>
-          <InputBase placeholder='Search post by title' sx={{width: '450px', padding: '10px'}}
+          <Paper component='form' className={styles.paper}>
+          <InputBase placeholder='Search post by title' className={styles.input} autoFocus={true}
                      onChange={(event) => onChange(event.target.value)}/>
           <IconButton aria-label='search' disabled={true}>
               <SearchIcon></SearchIcon>

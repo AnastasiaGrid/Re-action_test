@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.loader {
+  padding: 30px;
+}
+
+.paper{
+  min-width: 500px;
+}
+
+.input{
+  padding: 10px;
+  min-width: 450px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 675px) {
+  .paper{
+    min-width: 250px;
+  }
+  .input{
+    min-width: 200px;
+  }
+
+}
