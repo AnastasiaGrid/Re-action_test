@@ -1,4 +1,4 @@
-import {Card, CardContent, Typography} from "@mui/material";
+import {Card, CardContent } from "@mui/material";
 import React from "react";
 import {IPost} from "../../utils/types.ts";
 import styles from "./PostItem.module.scss";
