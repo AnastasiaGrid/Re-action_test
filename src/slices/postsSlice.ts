@@ -1,6 +1,6 @@
-import {getPosts, IPostsParams} from "../utils/api.ts";
+import {getPosts} from "../utils/api.ts";
 import {IPost } from "../utils/types.ts";
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface IInitialState {
     posts: IPost[],
@@ -10,16 +10,14 @@ interface IInitialState {
         page?: number,
         title?: string
     }
-
-
 }
+
 const initialState: IInitialState = {
     posts: [],
     loadingPosts: false,
     error: null,
     params: {
         page: 1,
-        title: ''
     }
 }
 
@@ -31,13 +29,23 @@ export const getPostsApiThunk = createAsyncThunk(
 export const postsSlice = createSlice({
     name: 'posts',
     initialState,
-    reducers:{},
+    reducers:{
+        setTitleParam(state, action: PayloadAction<string>) {
+            state.params.title = action.payload
+            return state
+        },
+        setPageParam(state, action: PayloadAction<number>) {
+            state.params.page = action.payload
+            return state
+        },
+    },
     selectors: {
         selectIsPostsLoading: (sliceState)=> sliceState.loadingPosts,
         selectPosts: (sliceState)=> sliceState.posts,
         selectPage: (sliceState)=> sliceState.params.page,
         selectParams: (sliceState)=> sliceState.params,
         selectFiltering: (sliceState)=> sliceState.params.title? !!sliceState.params.title.length : false,
+        selectError: (sliceState)=> sliceState.error,
     },
     extraReducers: (builder) => {
         builder
@@ -49,14 +57,12 @@ export const postsSlice = createSlice({
                 state.error = 'Oшибка загрузки постов';
             })
             .addCase(getPostsApiThunk.fulfilled, (state, action ) => {
-                console.log(action)
                 state.loadingPosts = false;
-                state.params.title = action.meta.arg.title
-                state.params.page = action.meta.arg.page
                 state.posts = action.payload;
             });
     }
 })
 
 export default postsSlice.reducer;
-export const { selectIsPostsLoading, selectPosts, selectPage, selectFiltering } = postsSlice.selectors
+export const { setTitleParam,setPageParam } = postsSlice.actions
+export const { selectIsPostsLoading, selectPosts, selectPage, selectFiltering, selectParams, selectError } = postsSlice.selectors
