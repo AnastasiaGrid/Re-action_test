@@ -8,10 +8,6 @@ export interface IPostsParams {
   title?: string
 }
 
-interface IGetPostsParams {
-    posts: IPost[];
-    page: number;
-}
 const clearObjectValues = (obj: Record<string, string>)=> {
     const clearedObj: Record<string, string> = {}
     for (const key in obj) {
@@ -25,13 +21,6 @@ export const getPosts = async ({page = 1, title = ''}: IPostsParams): Promise<IP
         _page: page? String(page): '',
         title,
     }));
-
     return fetch(`https://jsonplaceholder.typicode.com/posts?${params}`)
         .then((response) => checkResponse<IPost[]>(response))
-        // .then((data: IPost[]) => {
-        //     if (data) {
-        //         return data
-        //         // return {posts: data, page: page}
-        //     }
-        //     return Promise.reject(data)})
 }
